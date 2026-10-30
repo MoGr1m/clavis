@@ -39,3 +39,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local / secrets (уже есть .env*)
+.env.local
+
+# сырые исходники фото/видео (в репо только public webp/mp4)
+/raw/
+/tmp/
+*.CR2
+*.ARW
