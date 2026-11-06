@@ -5,13 +5,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
-import { Hero } from "@/components/Hero";
+import { HomeHero } from "@/components/HomeHero";
 import { ProjectCard } from "@/components/ProjectCard";
 import { PROJECTS, projectCover } from "@/lib/projects";
 import { pageMeta } from "@/lib/seo";
 import { FAQ, MANIFEST, PROCESS_STEPS, SERVICES } from "@/lib/site";
 
-const heroProject = PROJECTS.find((p) => p.slug === "ribs-48") ?? PROJECTS[0];
+/** Первый слайд карусели — для OG-картинки */
+const heroProject = PROJECTS[0];
 
 export const metadata: Metadata = pageMeta({
   title: "Студия дизайна интерьера",
@@ -25,7 +26,7 @@ export const metadata: Metadata = pageMeta({
 export default function HomePage() {
   return (
     <>
-      <Hero project={heroProject} />
+      <HomeHero projects={PROJECTS} />
 
       <section className="container-page py-16 md:py-28">
         <div className="grid gap-12 md:grid-cols-[1.1fr_0.9fr] md:items-end">

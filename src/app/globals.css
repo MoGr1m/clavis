@@ -150,6 +150,84 @@ img {
   will-change: transform;
 }
 
+/* ---- HomeHero: карусель проектов ---- */
+@keyframes home-hero-caption-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/*
+ * Crossfade кадров (~1.1 с).
+ * Важно: opacity на .home-hero__asset (img/video), НЕ только на обёртке —
+ * <video> часто игнорирует opacity родителя → «залипает» первый кадр,
+ * пока подпись уже меняется.
+ */
+.home-hero__media {
+  isolation: isolate;
+}
+
+.home-hero__slide {
+  z-index: 0;
+  pointer-events: none;
+}
+
+.home-hero__slide.is-active {
+  z-index: 1;
+}
+
+.home-hero__asset {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  opacity: 0;
+  transition: opacity 1.1s ease-in-out;
+  will-change: opacity;
+  /* Слой композиции — иначе WebKit/Chrome могут не fade'ить video */
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+}
+
+.home-hero__slide.is-active .home-hero__asset {
+  opacity: 1;
+}
+
+.home-hero__slide img.home-hero__asset {
+  /* next/image fill уже absolute — дублируем object-fit */
+  object-fit: cover;
+}
+
+.home-hero__caption {
+  animation: home-hero-caption-in 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.home-hero__dot {
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(245, 241, 236, 0.7);
+  background: transparent;
+  padding: 0;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.home-hero__dot.is-active {
+  background: #f5f1ec;
+  border-color: #f5f1ec;
+}
+
+.home-hero__dot:hover {
+  border-color: #f5f1ec;
+}
+
 .project-card-media img {
   transition: transform 0.7s var(--ease-out);
 }
@@ -160,10 +238,12 @@ img {
 
 @media (prefers-reduced-motion: reduce) {
   .motion-fade-up,
-  .hero-media img {
+  .hero-media img,
+  .home-hero__caption {
     animation: none;
   }
-  .project-card-media img {
+  .project-card-media img,
+  .home-hero__asset {
     transition: none;
   }
 }
